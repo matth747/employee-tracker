@@ -7,7 +7,7 @@ function startApp() {
             type: 'list',
             message: 'What would you like to do?',
             name: 'choice',
-            choices: (['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role'])
+            choices: (['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role', 'quit'])
         }
     ])
     .then(answer => {
@@ -38,7 +38,12 @@ function startApp() {
         else if (answer.choice === 'update an employee role') {
             //function for this choice
             updateEmp();
-        } else {
+        }
+        else if (answer.choice === 'quit') {
+            //end the program
+            return
+        }
+        else {
             console.log('error choosing choice')
         }
     })
@@ -46,26 +51,93 @@ function startApp() {
 
 //functions for main menu options
 function viewDept() {
-    return inquirer
-    .prompt([
-
-    ])
+    //view department table
 }
 function viewRoles() {
-    
+    //view roles table
 }
 function viewAllEmp() {
-    
+    //view employee table
 }
 function addDept() {
+    return inquirer
+    .prompt([
+        {
+            type: 'input',
+            message: 'What is the name of the department?',
+            name: 'deptName',
+        }
+    ])
     
 }
 function addRole() {
-    
+    return inquirer
+    .prompt([
+    {
+        type: 'input',
+        message: 'What is the name of the role?',
+        name: 'deptName',
+    },
+    {
+        type: 'input',
+        message: 'What is the salary of the role?',
+        name: 'salary',
+    },
+    {
+        type: 'list',
+        message: 'Which department does the role belong to?',
+        name: 'deptName',
+        //pull department names to make the list below
+        choices: ([''])
+    }
+    //message saying added successfully
+])
 }
 function addEmp() {
-    
+    return inquirer
+    .prompt([
+    {
+        type: 'input',
+        message: 'What is the employee\'s first name?',
+        name: 'firstName',
+    },
+    {
+        type: 'input',
+        message: 'What is the employee\'s last name?',
+        name: 'lastName',
+    },
+    {
+        type: 'list',
+        message: 'What is the employee\'s role?',
+        name: 'role',
+        //pull role names to make the list below
+        choices: ([''])
+    },
+    {
+        type: 'list',
+        message: 'Who is the employee\'s manager?',
+        name: 'role',
+        //pull manager names to make the list below
+        choices: (['None', ])
+    }
+    ])
 }
 function updateEmp() {
-    
+    return inquirer
+    .prompt([
+        {
+            type: 'list',
+            message: 'Which employees role do you want to update?',
+            name: 'empUpd',
+            //pull employee names to make the list below
+            choices: (['', ''])
+        },
+        {
+            type: 'list',
+            message: 'Which role do you want to assign to selected employee?',
+            name: 'newRole',
+            //pull role names to make the list below
+            choices: (['None', ])
+        }
+    ])
 }
