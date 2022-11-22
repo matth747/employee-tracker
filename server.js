@@ -1,4 +1,20 @@
-const inquirer = require('inquirer')
+const inquirer = require('inquirer');
+const mysql = require('mysql2');
+const cTable = require('console.table');
+
+// Connect to database
+const db = mysql.createConnection(
+    {
+      host: 'localhost',
+      // MySQL username,
+      user: 'root',
+      // MySQL password
+      password: 'rootPassword',
+      database: 'employee_db'
+    },
+    console.log(`Connected to the  database.`)
+  );
+
 
 function startApp() {
     return inquirer
@@ -52,6 +68,12 @@ function startApp() {
 //functions for main menu options
 function viewDept() {
     //view department table
+    db.query(`S FROM favorite_books WHERE id = ?`, (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(result);
+      });
 }
 function viewRoles() {
     //view roles table
@@ -141,3 +163,5 @@ function updateEmp() {
         }
     ])
 }
+
+startApp()
