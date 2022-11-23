@@ -1,7 +1,7 @@
-# Todo Express
+# Employee Tracker
 
 ## Description
-A note taking app that uses get and post request.  Router is used here to make the code nicer
+This is an employee tracker using mysql queries to create read update and delete information.  The queries will be for department, roles, and employees tables. 
 
 ## Table of Contents 
 
@@ -18,10 +18,10 @@ run node server.js
 
 ## Credits
 
-heroku site: https://todo-express-747.herokuapp.com/
-github repo: https://github.com/matth747/todo-express
 
-![SS](./images/todoSS.jpg)
+github repo: https://github.com/matth747/employee-tracker
+
+vid link: https://drive.google.com/file/d/1m0Zx4MYt5Mm6OiMqJ455BysTTIDLL5K8/view
 
 ## License
 

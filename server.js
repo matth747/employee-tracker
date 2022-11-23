@@ -28,32 +28,37 @@ function startApp() {
     ])
     .then(answer => {
         if (answer.choice === 'view all departments') {
-            //function for this choice
+
             viewDept ();
+            
         }
         else if (answer.choice === 'view all roles') {
-            //function for this choice
+
             viewRoles();
         }
         else if (answer.choice === 'view all employees') {
-            //function for this choice
+
             viewAllEmp();
         }
         else if (answer.choice === 'add a department') {
-            //function for this choice
+
             addDept();
+            
         }
         else if (answer.choice === 'add a role') {
-            //function for this choice
+
             addRole();
+            
         }
         else if (answer.choice === 'add an employee') {
-            //function for this choice
+
             addEmp();
+            
         }
         else if (answer.choice === 'update an employee role') {
-            //function for this choice
+
             updateEmp();
+            
         }
         else if (answer.choice === 'quit') {
             //end the program
@@ -66,21 +71,43 @@ function startApp() {
 }
 
 //functions for main menu options
+
 function viewDept() {
     //view department table
-    db.query(`S FROM favorite_books WHERE id = ?`, (err, result) => {
+    db.query(`SELECT department.id, department.name FROM department;`, (err, result) => {
         if (err) {
           console.log(err);
         }
-        console.log(result);
+        console.table(result);
       });
+      startApp();
 }
+
+
 function viewRoles() {
     //view roles table
+    db.query(`SELECT * FROM roles`, (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.table(result);
+      });
+      startApp();
 }
+
+
 function viewAllEmp() {
     //view employee table
+    db.query(`SELECT * FROM employees`, (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.table(result);
+      });
+      startApp();
 }
+
+
 function addDept() {
     return inquirer
     .prompt([
@@ -90,15 +117,27 @@ function addDept() {
             name: 'deptName',
         }
     ])
+
+    .then(answer => {
+        db.query(`INSERT INTO department (name) VALUES ('${answer.deptName}');`, (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+            console.log('success');
+            }
+        });
+    })
     
 }
+    
+
 function addRole() {
     return inquirer
     .prompt([
     {
         type: 'input',
         message: 'What is the name of the role?',
-        name: 'deptName',
+        name: 'roleName',
     },
     {
         type: 'input',
@@ -106,15 +145,25 @@ function addRole() {
         name: 'salary',
     },
     {
-        type: 'list',
+        
+        type: 'input',
         message: 'Which department does the role belong to?',
-        name: 'deptName',
-        //pull department names to make the list below
-        choices: ([''])
-    }
+        name: 'deptName'
+        
+    }])
+    .then(answer => {
+        db.query(`INSERT INTO roles (title, salary, department_id) VALUES ('${answer.roleName}', ${answer.salary}, ${answer.deptName});`, (err) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log('success');
+          });
+    })
     //message saying added successfully
-])
+
 }
+
+
 function addEmp() {
     return inquirer
     .prompt([
@@ -129,39 +178,70 @@ function addEmp() {
         name: 'lastName',
     },
     {
-        type: 'list',
-        message: 'What is the employee\'s role?',
+        type: 'input',
+        message: 'What is the employee\'s role #?',
         name: 'role',
         //pull role names to make the list below
-        choices: ([''])
+        
     },
     {
-        type: 'list',
-        message: 'Who is the employee\'s manager?',
-        name: 'role',
+        type: 'input',
+        message: 'Who is the employee\'s manager #?',
+        name: 'manager',
         //pull manager names to make the list below
-        choices: (['None', ])
-    }
-    ])
+        
+    }])
+    
+    .then(answer => {
+        db.query(`INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('${answer.firstName}', '${answer.lastName}', ${answer.role}, ${answer.manager})`, (err) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log('success');
+          });
+    })
 }
+
+
 function updateEmp() {
+    
     return inquirer
     .prompt([
         {
-            type: 'list',
-            message: 'Which employees role do you want to update?',
-            name: 'empUpd',
+            type: 'input',
+            message: 'Which employee id\'s role do you want to update?',
+            name: 'empId',
             //pull employee names to make the list below
-            choices: (['', ''])
+            
         },
         {
-            type: 'list',
-            message: 'Which role do you want to assign to selected employee?',
+            type: 'input',
+            message: 'Which role # do you want to assign to selected employee?',
             name: 'newRole',
             //pull role names to make the list below
-            choices: (['None', ])
-        }
-    ])
+            
+        }])
+
+        .then(answer => {
+            db.query(`UPDATE employees SET role_id = ${answer.newRole} WHERE id = ${answer.empId}`, (err) => {
+                
+                if (err) {
+                  console.log(err);
+                }
+                console.log('success');
+              });
+        })
 }
 
-startApp()
+/* function updateEmployee(answer) {
+    console.log(answer)
+    db.query(`UPDATE employees SET role_id = ${answer} WHERE id = ?`, (err) => {
+
+    if (err) {
+      console.log(err);
+    }
+    console.log('success');
+  });
+} */
+//updateEmployee(answer)
+startApp();
